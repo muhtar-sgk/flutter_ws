@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -14,8 +15,8 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
   final _channel = WebSocketChannel.connect(
     Uri.parse('wss://socketsbay.com/wss/v2/1/demo/'),
   );
-
-    bool _isAlertDialogShown = false; // Tambahkan variabel ini
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isAlertDialogShown = false; // Tambahkan variabel ini
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
@@ -30,27 +31,30 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
     super.dispose();
   }
 
-  void _showAlertDialog(String message) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: Text('New Message'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _isAlertDialogShown = false; // Set _isAlertDialogShown ke false saat AlertDialog ditutup
-            },
-            child: Text('Tutup'),
-          ),
-        ],
-      );
-    },
-  );
-}
+  void _showAlertDialog(String message) async {
+    await _audioPlayer.play(AssetSource('sounds/alert_dialog.wav'));
 
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('New Message'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _isAlertDialogShown = false;
+                _audioPlayer
+                    .stop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +83,12 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
                   // });
                   if (receivedData.contains('muhtar') && !_isAlertDialogShown) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                    setState(() {
-                      _showAlertDialog(snapshot.data);
-                      _isAlertDialogShown = true; // Atur _isAlertDialogShown ke true
+                      setState(() {
+                        _showAlertDialog(snapshot.data);
+                        _isAlertDialogShown =
+                            true;
+                      });
                     });
-                   });
                   }
                 }
                 return Text(snapshot.hasData ? '${snapshot.data}' : '');

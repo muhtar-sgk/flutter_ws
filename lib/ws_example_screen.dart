@@ -65,22 +65,20 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Form(
-              child: TextFormField(
-                controller: _controller,
-                decoration: const InputDecoration(labelText: 'Send a message'),
-              ),
-            ),
-            const SizedBox(height: 24),
+            // Form(
+            //   child: TextFormField(
+            //     controller: _controller,
+            //     decoration: const InputDecoration(labelText: 'Send a message'),
+            //   ),
+            // ),
+            // const SizedBox(height: 24),
             StreamBuilder(
               stream: _channel.stream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final receivedData = snapshot.data as String;
                   print('receivedData ' + receivedData);
-                  // setState(() {
-                  //   _websocketMessages.add(receivedData);
-                  // });
+                  _websocketMessages.add(receivedData);
                   if (receivedData.contains('muhtar') && !_isAlertDialogShown) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       setState(() {
@@ -91,23 +89,25 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
                     });
                   }
                 }
-                return Text(snapshot.hasData ? '${snapshot.data}' : '');
-                // return ListView.builder(
-                //   itemCount: _websocketMessages.length,
-                //   itemBuilder: (context, index) {
-                //     return Text(snapshot.hasData ? _websocketMessages[index] : '');
-                //   },
-                // );
+                // return Text(snapshot.hasData ? '${snapshot.data}' : '');
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: _websocketMessages.length,
+                    itemBuilder: (context, index) {
+                      return Text(snapshot.hasData ? _websocketMessages[index] : '');
+                    },
+                  ),
+                );
               },
             )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _sendMessage,
-        tooltip: 'Send message',
-        child: const Icon(Icons.send),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _sendMessage,
+      //   tooltip: 'Send message',
+      //   child: const Icon(Icons.send),
+      // ),
     );
   }
 }

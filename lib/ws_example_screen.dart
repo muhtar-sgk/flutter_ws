@@ -16,7 +16,7 @@ class _WSExampleScreenState extends State<WSExampleScreen> {
     Uri.parse('wss://socketsbay.com/wss/v2/1/demo/'),
   );
   final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isAlertDialogShown = false; // Tambahkan variabel ini
+  bool _isAlertDialogShown = false;
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getz_pos/pusher_example_screen.dart';
 import 'package:getz_pos/ws_example_screen.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const WSExampleScreen()
+      home: const PusherExampleScreen()
     );
   }
 }

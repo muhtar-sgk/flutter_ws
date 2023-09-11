@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getz_pos/home_screen.dart';
 import 'package:getz_pos/pusher_example_screen.dart';
 import 'package:getz_pos/ws_example_screen.dart';
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const PusherExampleScreen()
+      // home: const PusherExampleScreen()
+      home: const HomeScreen()
     );
   }
 }
